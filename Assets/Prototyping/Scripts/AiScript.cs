@@ -4,50 +4,59 @@ using UnityEngine;
 
 public class AiScript : MonoBehaviour
 {
-    public float speed = 5;
+    public float speed = 2;
+    public bool movingVertical = false;
+    public bool movingHorizontal = false;
+
     bool movingRight = true;
     bool movingUp = true;
 
     void Update()
     {
-        transform.Translate(Vector2.right * speed * Time.deltaTime);
-        transform.Translate(Vector2.up * speed * Time.deltaTime);
+        if (movingHorizontal)
+        {
+            transform.Translate(Vector2.right * speed * Time.deltaTime);
+        }
+        else if (movingVertical)
+        {
+            transform.Translate(Vector2.up * speed * Time.deltaTime);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Wall")
+        if (movingHorizontal)
         {
-            if(movingRight == true)
+            if (other.gameObject.tag == "Wall")
             {
-                transform.eulerAngles = new Vector3(0, -180, 0);
-                movingRight = false;
-            }
-            else
-            {
-                transform.eulerAngles = new Vector3(0, 0, 0);
-                movingRight = true;
-            }
-            
-        }
-
-        if(other.gameObject.tag == "Ceiling")
-        {
-            if (movingUp == true)
-            {
-                transform.eulerAngles = new Vector3(-180, 0, 0);
-                movingUp = false;
-            }
-            else
-            {
-                transform.eulerAngles = new Vector3(0, 0, 0);
-                movingUp = true;
+                if (movingRight == true)
+                {
+                    transform.eulerAngles = new Vector3(0, 180, 0);
+                    movingRight = false;
+                }
+                else if (movingRight == false)
+                {
+                    transform.eulerAngles = new Vector3(0, 0, 0);
+                    movingRight = true;
+                }
             }
         }
 
-        if (other.gameObject.tag == "Player")
+        if (movingVertical)
         {
-            Destroy(gameObject);
+            if (other.gameObject.tag == "Wall")
+            {
+                if (movingUp == true)
+                {
+                    transform.eulerAngles = new Vector3(0, 0, 180);
+                    movingUp = false;
+                }
+                else if (movingUp == false)
+                {
+                    transform.eulerAngles = new Vector3(0, 0, 0);
+                    movingUp = true;
+                }
+            }
         }
     }
 }
