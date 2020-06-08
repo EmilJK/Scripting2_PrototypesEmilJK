@@ -17,12 +17,13 @@ public class TiltControls : MonoBehaviour
     {
         transform.Translate(Input.acceleration.x * tiltSpeed * Time.deltaTime, Input.acceleration.y * tiltSpeed * Time.deltaTime, 0);
 
+#if Unity_Editor
         if (Input.GetKeyDown(KeyCode.R))
         {
             transform.position = startPos;
         }
+#endif
     }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "BlackHole")
